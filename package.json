@@ -1,0 +1,32 @@
+{
+  "name": "panel-ffa",
+  "version": "1.0.0",
+  "description": "Panel facut pentru FFA Romania de catre Robert",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "author": "Robert",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.0",
+    "connect": "^3.7.0",
+    "connect-mongo": "^4.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.10.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0",
+    "quake3-rcon": "^1.0.2",
+    "rcon.js": "^1.0.0",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
