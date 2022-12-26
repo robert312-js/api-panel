@@ -13,7 +13,7 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
-app.use(cors({credentials: true, origin: ['http://localhost:3000']}));
+app.use(cors({credentials: true, origin: ['https://panel.fairplay-rp.ro/']}));
 
 // Express Session Middleware
 app.use(express.json());

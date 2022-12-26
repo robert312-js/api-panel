@@ -30,7 +30,6 @@ router.post('/login', async (req, res) => {
                     id: emailExist.user_id,
                     username: userData['username'],
                 };
-                console.log("User logged in: " + userData['username'] + ' ' + req.session.authenticated )
                 res.status(200).json({
                     success: true,
                     msg: 'Te-ai logat cu succes!',

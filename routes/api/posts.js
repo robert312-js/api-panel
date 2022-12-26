@@ -10,7 +10,6 @@ router.get('/user/:id', async (req, res) => {
     res.send(data);
 });
 
-
 router.get('/userhistory/:id', async (req, res) => {
     const data = await LoadCollection('fairplay_rp', 'userHistory');
     res.send(await data.find({user_id: parseInt(req.params.id)}).toArray());
@@ -22,6 +21,7 @@ router.get('/userpunishlog/:id', async (req, res) => {
 });
 
 router.get('/userVehicles/:id', async (req, res) => {
+    let VehiclesCollection = await LoadCollection('fairplay_rp', 'userVehicles');
     let data = await VehiclesCollection.find({user_id: parseInt(req.params.id)}).toArray();
     res.send(data);
 });
@@ -70,7 +70,6 @@ router.get('/recentactions', async (req, res) => {
     res.send(RecentActions);
 });
 
-
 // Server Logs
 router.get('/serverLogs/:id/:type', async (req, res) => {
     let id = req.params.id
@@ -98,7 +97,6 @@ router.get('/getServerLogsTarget/:id/:type/:info/:target', async (req, res) => {
     const data = await LoadCollection('fairplay_rp', 'serverLogs');
     res.send(await data.find({user_id: parseInt(id), type: type.toString(), data: logData.toString(), target_id: parseInt(target)}).toArray());
 });
-
 
 async function LoadCollection(db, collection) {
     const client = await mongodb.MongoClient.connect("mongodb://Administrator:satibagmuiecorkysugipula123@185.225.3.114:27017/?authMechanism=SCRAM-SHA-1&authSource=fairplay_rp", {

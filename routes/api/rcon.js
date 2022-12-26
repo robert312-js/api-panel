@@ -6,13 +6,12 @@ const Q3RCon = require('quake3-rcon');
 
 var rcon = new Q3RCon({
   address: "185.225.3.114",
-  port: "5555",
-  password: 'fairplaysuntsmecherirestufraieri23242',
+  port: "30120",
+  password: 'fairplaysuntsmecherivaliegay2323',
 });
 
 router.post('/rcon', express.urlencoded({ extended: false }), async (req, res) => {
     const command = req.body.command;
-
     if (req.session.user) {
         let user_id = req.session.user['id']
         let collectionData = await LoadCollection('fairplay_rp', 'users')
