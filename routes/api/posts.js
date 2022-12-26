@@ -38,9 +38,7 @@ async function GetDataFromDB() {
     let UsersCollection = await LoadCollection('fairplay_rp', 'users');
     UsersData = await UsersCollection.find({}, {projection: {userMoney: 1, id: 1, userRaport: 1,  userFaction: 1, userIdentity: 1, username: 1, adminLvl:1, hoursPlayed: 1, vipLvl: 1, userBans: 1, last_login: 1}}).toArray();
     setTimeout(GetDataFromDB, 15000);
-}
-
-GetDataFromDB();
+} GetDataFromDB();
 
 async function GetServerInfo() {
     let VehiclesCollection = await LoadCollection('fairplay_rp', 'userVehicles');
@@ -49,9 +47,7 @@ async function GetServerInfo() {
     ServerVehicles = await VehiclesCollection.find({}).toArray();
     RecentActions = await UserHistoryCollection.find({}).toArray();
     setTimeout(GetServerInfo, 30000);
-}
-
-GetServerInfo();
+} GetServerInfo();
 
 // Get Staff Members
 router.get('/staff', async (req, res) => {
