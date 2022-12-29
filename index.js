@@ -44,8 +44,10 @@ const port = process.env.PORT || 5000;
 const posts = require('./routes/api/posts');
 const auth = require('./routes/api/auth');
 const rcon = require('./routes/api/rcon');
+const stats = require('./routes/api/stats-file');
 app.use('/api', posts);
 app.use('/api', auth);
 app.use('/api', rcon);
+app.use('/api', stats);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

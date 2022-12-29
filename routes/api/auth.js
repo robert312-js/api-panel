@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const mongodb = require('mongodb');
 const router = express.Router();
+const mongodb = require('../../utils/mongodb.js');
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -11,8 +11,8 @@ router.post('/login', async (req, res) => {
     } else {
         if (email && password) {
             // Find user by email
-            const data = await LoadCollection('fairplay_rp', 'panel_users')
-            let userInfo = await LoadCollection('fairplay_rp', 'users')
+            const data = await mongodb.LoadCollection('panel_users')
+            let userInfo = await mongodb.LoadCollection('users')
             const emailExist = await data.findOne({email: email});
             // Check if email exist in database
             if (!emailExist) {
@@ -55,7 +55,7 @@ router.post('/register', async (req, res) => {
     let password = req.body.password;
     let user_code = req.body.code;
 
-    const data = await LoadCollection('fairplay_rp', 'panel_users');
+    const data = await mongodb.LoadCollection('panel_users');
     const hasEmail = await data.findOne({email: email});
 
     if (hasEmail) {
@@ -74,7 +74,7 @@ router.post('/register', async (req, res) => {
         });
     }
 
-    const userData = await LoadCollection('fairplay_rp', 'users');
+    const userData = await mongodb.LoadCollection('fairplay_rp', 'users');
     const user = await userData.findOne({code: user_code});
     
     if (user) {
@@ -133,7 +133,7 @@ router.get('/account', express.urlencoded({ extended: false }), (req, res) => {
 router.get("/admin", express.urlencoded({ extended: false }), async (req, res) => {
     if (req.session.authenticated) {
         let user_id = req.session.user['id']
-        let collectionData = await LoadCollection('fairplay_rp', 'users')
+        let collectionData = await mongodb.LoadCollection('users')
         let userData = await collectionData.findOne({id: parseInt(user_id)})
         if (userData['adminLvl'] >= 1) {
             res.status(201).json({
@@ -148,13 +148,5 @@ router.get("/admin", express.urlencoded({ extended: false }), async (req, res) =
         }
     }
 });
-
-async function LoadCollection(db, collection) {
-    const client = await mongodb.MongoClient.connect("mongodb://Administrator:satibagmuiecorkysugipula123@185.225.3.114:27017/?authMechanism=SCRAM-SHA-1&authSource=fairplay_rp", {
-        useNewUrlParser: true
-    });
-
-    return client.db(db).collection(collection);
-}
 
 module.exports = router;
