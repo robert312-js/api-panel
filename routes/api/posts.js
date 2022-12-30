@@ -141,7 +141,6 @@ router.get("/admin", express.urlencoded({ extended: false }), async (req, res) =
     if (req.session.authenticated) {
         let user_id = req.session.user['id']
         let playerData = UsersData[user_id];
-        console.log(user_id)
         if (!playerData) {
             return
         };
