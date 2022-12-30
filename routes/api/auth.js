@@ -130,23 +130,6 @@ router.get('/account', express.urlencoded({ extended: false }), (req, res) => {
     }
 })
 
-router.get("/admin", express.urlencoded({ extended: false }), async (req, res) => {
-    if (req.session.authenticated) {
-        let user_id = req.session.user['id']
-        let collectionData = await mongodb.LoadCollection('users')
-        let userData = await collectionData.findOne({id: parseInt(user_id)})
-        if (userData['adminLvl'] >= 1) {
-            res.status(201).json({
-                isAdmin: true,
-                adminLvl: userData['adminLvl'],
-                adminId: userData['id']
-            })
-        } else {
-            res.status(201).json({
-                isAdmin: false,
-            })
-        }
-    }
-});
+
 
 module.exports = router;

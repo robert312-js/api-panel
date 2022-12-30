@@ -17,8 +17,6 @@ async function InsertServerStats() {
       setTimeout(InsertServerStats, 3000);
       let userCollection = await mongodb.LoadCollection('users');
       let usersData = await userCollection.find({}).toArray();
-  
-      console.log(LastUpdated > Date.now())
 
       if (LastUpdated > Date.now()) {
           return;
@@ -42,9 +40,10 @@ async function InsertServerStats() {
           ServerStats['maxBankMoney'] = totalMoney;
           ServerStats['maxCashMoney'] = totalCash;
         }
-        GetPlayersMediumMoney()
-    LastUpdated = Date.now() + 18000000 // 5 hours seconds
-    let serverStatsCollection = await mongodb.LoadCollection('serverStats2', 'panel_database');
+        LastUpdated = Date.now() + 18000000 // 5 hours seconds
+        let serverStatsCollection = await mongodb.LoadCollection('serverStats2', 'panel_database');
+        console.log("Server Stats Updated: | " + totalMoney + " | " + totalCash + " | " + totalBank);
+
 
     // await serverStatsCollection.insertOne({
     //     timestamp: Date.now(),
@@ -53,78 +52,63 @@ async function InsertServerStats() {
     //     totalCash: totalCash,
     //     totalBank: totalBank,
     // });
-    } catch (error) {
-      console.error(error);
-    }
-  } 
+        GetPlayersMediumMoney()
+        GetServerStats();
+        } catch (error) {
+          console.error(error);
+        }
+  } InsertServerStats();
   
-  InsertServerStats();
-
   async function GetPlayersMediumMoney() {
     try {
-        let usersCollection = await mongodb.LoadCollection('users');
-        let usersData = await usersCollection.find({}).toArray()
-        let usersNumber = 0;
-        let totalMoney = 0;
+      let usersCollection = await mongodb.LoadCollection('users');
+      let usersData = await usersCollection.find({}).toArray()
+      let usersNumber = 0;
+      let totalMoney = 0;
 
-        for (const data of usersData) {
-          if (data['hoursPlayed'] >= 10) {
-            if (data['userMoney'] == undefined) {
-              continue;
-            }
-            usersNumber++;
-            let cashMoney = data['userMoney'].walletMoney ? data['userMoney'].walletMoney : 0;
-            let bankMoney = data['userMoney'].bankMoney ? data['userMoney'].bankMoney : 0;
-
-            totalMoney += Math.floor(cashMoney + bankMoney);
+      for (const data of usersData) {
+        if (data['hoursPlayed'] >= 10) {
+          if (data['userMoney'] == undefined) {
+            continue;
           }
+          usersNumber++;
+          let cashMoney = data['userMoney'].walletMoney ? data['userMoney'].walletMoney : 0;
+          let bankMoney = data['userMoney'].bankMoney ? data['userMoney'].bankMoney : 0;
+          totalMoney += Math.floor(cashMoney + bankMoney);
         }
-        console.log(totalMoney, usersNumber)
-        ServerStats['mediumMoney'] = Math.floor(totalMoney / usersNumber);
+      }
+      ServerStats['mediumMoney'] = Math.floor(totalMoney / usersNumber);
     } catch (error) {
         console.error(error);
     }
 }
+
 async function GetServerStats() {
     try {
-        const serverStatsCollection = await mongodb.LoadCollection('serverStats2', 'panel_database');
-        const serverStatsData = await serverStatsCollection.find({}).sort({ timestamp: -1 }).toArray();
+      const serverStatsCollection = await mongodb.LoadCollection('serverStats2', 'panel_database');
+      const serverStatsData = await serverStatsCollection.find({}).sort({ timestamp: -1 }).toArray();
     
-        serverStatsData.forEach((info) => {
-          ServerStats.totalMoney[info.date]= {
-            money: info.totalMoney,
-            time: info.timestamp
-          }
-          ServerStats.totalCash[info.date] = {
-            money: info.totalCash,
-            time: info.timestamp
-          };
-          ServerStats.totalBank[info.date] = {
-            money: info.totalBank,
-            time: info.timestamp
-          };
-        });
-        setTimeout(GetServerStats, 30000);
-      } catch (error) {
-        console.error(error);
-      }
-} GetServerStats();
+      serverStatsData.forEach((info) => {
+        ServerStats.totalMoney[info.date]= {
+          money: info.totalMoney,
+          time: info.timestamp
+        }
+        ServerStats.totalCash[info.date] = {
+          money: info.totalCash,
+          time: info.timestamp
+        };
+        ServerStats.totalBank[info.date] = {
+          money: info.totalBank,
+          time: info.timestamp
+        };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+};
 
 router.get('/serverStats', async (req, res) => {
     res.send(ServerStats);
 });
-
-function GetDate(timestamp) {
-    var a = new Date(timestamp);
-    var month = a.getMonth();
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var hour = a.getHours() > 12 ? a.getHours() - 12 : a.getHours() < 10 ? "0" + a.getHours() : a.getHours();
-    var min = a.getMinutes() < 10 ? "0" + a.getMinutes() : a.getMinutes();
-    var time = date + "/" + month + "/" + hour + ":" + min;
-    return time;
-}
-
 
 module.exports = router;
