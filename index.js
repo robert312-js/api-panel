@@ -30,7 +30,7 @@ app.use(
         saveUninitialized: false,
         cookie: { maxAge: 60000 * 60 * 24 * 7},
         store: MongoStore.create({
-            mongoUrl: 'mongodb://gagicar:123gagicarcaasavreaueu123321@185.225.3.114:27017/?authMechanism=SCRAM-SHA-1&authSource=admin',
+            mongoUrl: '',
             touchAfter: 60 * 1, // time period in seconds
             dbName: 'panel_database',
             autoRemove: 'native'

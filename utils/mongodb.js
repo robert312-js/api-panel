@@ -1,8 +1,10 @@
 const mongodb = require('mongodb');
 
+const connection_url = ''
+
 module.exports.LoadCollection = function(collectionName, database) {
     return new Promise( async (resolve, reject) => {
-        const client = await mongodb.MongoClient.connect("mongodb://gagicar:123gagicarcaasavreaueu123321@185.225.3.114:27017/?authMechanism=SCRAM-SHA-1&authSource=admin", {
+        const client = await mongodb.MongoClient.connect(connection_url, {
             useNewUrlParser: true
         });
         if (database != null) {
